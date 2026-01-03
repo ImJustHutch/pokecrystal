@@ -1,0 +1,37 @@
+My approach with hacks is to remove tedium and give the player as much choice & freedom as possible without changing too much of the game as a whole. I think the original Pokemon Crystal has a lot to offer, and I wanted it to shine through, hence the name.
+
+General:
+- All bugfixes outlined in docs/bugs_and_glitches.md have been implemented
+- All uncensored/cut content restored from Japanese version
+- Odd Egg now has 50/50 chance of giving a shiny like in Japanese version
+
+QoL:
+- No password needed to reset the clock (still hold Down + B + SEL)
+- Much faster saving
+- Prompt to reuse repels
+- Lottery is daily instead of weekly
+- Receive multiples of fruit from trees
+- Kurt makes apricorn balls instantly
+- Shorter low health beep
+- Added Tradeback Guy to the Mobile Center (Gameboy kid closest to the door)
+
+Moves n' stuff:
+- TMs are reusable. Some have had their duplicates removed or have been relocated
+- TM/HM names are shown in menus & when received
+- HMs are forgettable (this means you can potentially softlock your game, but don't do that lol) [engine/pokemon/learn.asm & home/hm_moves.asm]
+- Pokemon need only be able to learn a field move in order to use it
+- The Move Deleter is now the Move Reminder. This implementation can teach moves of previous evolutions as well
+- Goldenrod Move Tutor is free, available after clearing Radio Tower, and can teach endlessly
+
+Battle:
+- Twineedle can no longer poison Steel types; Tri Attack can no longer burn Fire types or freeze Ice types
+- Removed the AI's extra 25% chance to miss status moves
+- Text updated to differentiate between miss, fail, & protect
+
+Aesthetics:
+- Applied a BGB style color filter! Included program used to edit source pngs with instructions
+
+Miscellaneous:
+- Able to bike through the National Park gates!
+- Improved outdoor sprite system
+- Abra now holds Twistedspoon 2% of the time

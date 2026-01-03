@@ -1,0 +1,10 @@
+ADJUSTPLTE INSTRUCTIONS
+
+adjustplte applies a series of color channel adjustments to the non-black, non-white palettes within pngs files. in the context of this hack, it is only used for pokemon & trainer sprites in gfx/pokemon & gfx/trainers respectively. the pngs in this branch have already been adjusted, but please feel free to use it for your own hack or polish the code or whatever.
+
+to compile, open a CLI of your choice, navigate to the tools folder within the repo, and type "gcc adjustplte.c -o adjustplte". to apply the adjustments to the pokemon & trainer folders, you'd type:
+
+./adjustplte ../gfx/pokemon
+./adjustplte ../gfx/trainers
+
+FYI, the program will recursively search through all subfolders within a directory.
