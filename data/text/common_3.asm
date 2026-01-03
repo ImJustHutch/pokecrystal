@@ -189,20 +189,9 @@ _WouldYouLikeToSaveTheGameText::
 	line "save the game?"
 	done
 
-_SavingDontTurnOffThePowerText::
-	text "SAVING… DON'T TURN"
-	line "OFF THE POWER."
-	done
-
 _SavedTheGameText::
 	text "<PLAYER> saved"
 	line "the game."
-	done
-
-_AlreadyASaveFileText::
-	text "There is already a"
-	line "save file. Is it"
-	cont "OK to overwrite?"
 	done
 
 _AnotherSaveFileText::
@@ -477,6 +466,11 @@ _EvolvingText::
 
 _MartHowManyText::
 	text "How many?"
+	done
+	
+AlreadyHaveTMText::
+	text "You already have"
+	line "that TM."
 	done
 
 _MartFinalPriceText::
@@ -910,22 +904,12 @@ _SpaceSpaceColonText:: ; unreferenced
 	done
 
 _PasswordAskResetText::
-	text "Password OK."
-	line "Select CONTINUE &"
-	cont "reset settings."
-	prompt
-
-_PasswordWrongText::
-	text "Wrong password!"
+	text "Select CONTINUE &"
+	line "reset settings."
 	prompt
 
 _PasswordAskResetClockText::
 	text "Reset the clock?"
-	done
-
-_PasswordAskEnterText::
-	text "Please enter the"
-	line "password."
 	done
 
 _ClearAllSaveDataText::
@@ -1427,53 +1411,6 @@ _KnowsMoveText::
 	line "@"
 	text_ram wStringBuffer2
 	text "."
-	prompt
-
-_MoveKnowsOneText::
-	text "That #MON knows"
-	line "only one move."
-	done
-
-_AskDeleteMoveText::
-	text "Oh, make it forget"
-	line "@"
-	text_ram wStringBuffer1
-	text "?"
-	done
-
-_DeleterForgotMoveText::
-	text "Done! Your #MON"
-	line "forgot the move."
-	done
-
-_DeleterEggText::
-	text "An EGG doesn't"
-	line "know any moves!"
-	done
-
-_DeleterNoComeAgainText::
-	text "No? Come visit me"
-	line "again."
-	done
-
-_DeleterAskWhichMoveText::
-	text "Which move should"
-	line "it forget, then?"
-	prompt
-
-_DeleterIntroText::
-	text "Um… Oh, yes, I'm"
-	line "the MOVE DELETER."
-
-	para "I can make #MON"
-	line "forget moves."
-
-	para "Shall I make a"
-	line "#MON forget?"
-	done
-
-_DeleterAskWhichMonText::
-	text "Which #MON?"
 	prompt
 
 _DSTIsThatOKText::

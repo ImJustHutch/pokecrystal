@@ -23,34 +23,89 @@ GoldenrodGameCorner_MapScripts:
 	def_scene_scripts
 
 	def_callbacks
-	callback MAPCALLBACK_OBJECTS, GoldenrodGameCornerMoveTutorCallback
 
-GoldenrodGameCornerMoveTutorCallback:
-	checkevent EVENT_BEAT_ELITE_FOUR
-	iffalse .finish
-	checkitem COIN_CASE
-	iffalse .move_tutor_inside
-	readvar VAR_WEEKDAY
-	ifequal WEDNESDAY, .move_tutor_outside
-	ifequal SATURDAY, .move_tutor_outside
-.move_tutor_inside
-	appear GOLDENRODGAMECORNER_MOVETUTOR
-	endcallback
-
-.move_tutor_outside
-	checkflag ENGINE_DAILY_MOVE_TUTOR
-	iftrue .finish
-	disappear GOLDENRODGAMECORNER_MOVETUTOR
-.finish
-	endcallback
-
-MoveTutorInsideScript:
+MoveTutorScript:
+	checkevent EVENT_CLEARED_RADIO_TOWER
+	iftrue .Tutor
 	faceplayer
 	opentext
-	writetext MoveTutorInsideText
+	writetext GoldenrodGameCornerMoveTutorText
 	waitbutton
 	closetext
 	turnobject GOLDENRODGAMECORNER_MOVETUTOR, RIGHT
+	end
+
+.Tutor
+	faceplayer
+	opentext
+	writetext GoldenrodGameCornerMoveTutorAskTeachAMoveText
+	yesorno
+	iffalse .Refused
+.TeachAnotherMove
+	writetext GoldenrodGameCornerMoveTutorWhichMoveShouldITeachText
+	loadmenu .MoveMenuHeader
+	verticalmenu
+	closewindow
+	ifequal MOVETUTOR_FLAMETHROWER, .Flamethrower
+	ifequal MOVETUTOR_THUNDERBOLT, .Thunderbolt
+	ifequal MOVETUTOR_ICE_BEAM, .IceBeam
+	sjump .Incompatible
+	
+.Flamethrower:
+	setval MOVETUTOR_FLAMETHROWER
+	writetext GoldenrodGameCornerMoveTutorMoveText
+	special MoveTutor
+	ifequal FALSE, .TeachMove
+	sjump .Incompatible
+
+.Thunderbolt:
+	setval MOVETUTOR_THUNDERBOLT
+	writetext GoldenrodGameCornerMoveTutorMoveText
+	special MoveTutor
+	ifequal FALSE, .TeachMove
+	sjump .Incompatible
+
+.IceBeam:
+	setval MOVETUTOR_ICE_BEAM
+	writetext GoldenrodGameCornerMoveTutorMoveText
+	special MoveTutor
+	ifequal FALSE, .TeachMove
+	sjump .Incompatible
+
+.MoveMenuHeader:
+	db MENU_BACKUP_TILES ; flags
+	menu_coords 0, 2, 15, TEXTBOX_Y - 1
+	dw .MenuData
+	db 1 ; default option
+
+.MenuData:
+	db STATICMENU_CURSOR ; flags
+	db 4 ; items
+	db "FLAMETHROWER@"
+	db "THUNDERBOLT@"
+	db "ICE BEAM@"
+	db "CANCEL@"
+
+.Refused:
+	writetext GoldenrodGameCornerMoveTutorAllRightKidText
+	waitbutton
+	closetext
+	end
+
+.TeachMove:
+	writetext GoldenrodGameCornerMoveTutorWantMeToTeachAnotherMoveText
+	yesorno
+	iftrue .TeachAnotherMove
+	writetext GoldenrodGameCornerMoveTutorTakeItEasyKidText
+	waitbutton
+	closetext
+	turnobject GOLDENRODGAMECORNER_MOVETUTOR, RIGHT
+	end
+
+.Incompatible:
+	writetext GoldenrodGameCornerMoveTutorAllRightKidText
+	waitbutton
+	closetext
 	end
 
 GoldenrodGameCornerCoinVendorScript:
@@ -75,6 +130,8 @@ GoldenrodGameCornerTMVendor_LoopScript:
 	sjump GoldenrodGameCornerPrizeVendor_CancelPurchaseScript
 
 .Thunder:
+	checkitem TM_THUNDER
+	iftrue GoldenrodGameCornerPrizeVendor_AlreadyHaveTMScript
 	checkcoins GOLDENRODGAMECORNER_TM25_COINS
 	ifequal HAVE_LESS, GoldenrodGameCornerPrizeVendor_NotEnoughCoinsScript
 	getitemname STRING_BUFFER_3, TM_THUNDER
@@ -86,6 +143,8 @@ GoldenrodGameCornerTMVendor_LoopScript:
 	sjump GoldenrodGameCornerTMVendor_FinishScript
 
 .Blizzard:
+	checkitem TM_BLIZZARD
+	iftrue GoldenrodGameCornerPrizeVendor_AlreadyHaveTMScript
 	checkcoins GOLDENRODGAMECORNER_TM14_COINS
 	ifequal HAVE_LESS, GoldenrodGameCornerPrizeVendor_NotEnoughCoinsScript
 	getitemname STRING_BUFFER_3, TM_BLIZZARD
@@ -97,6 +156,8 @@ GoldenrodGameCornerTMVendor_LoopScript:
 	sjump GoldenrodGameCornerTMVendor_FinishScript
 
 .FireBlast:
+	checkitem TM_FIRE_BLAST
+	iftrue GoldenrodGameCornerPrizeVendor_AlreadyHaveTMScript
 	checkcoins GOLDENRODGAMECORNER_TM38_COINS
 	ifequal HAVE_LESS, GoldenrodGameCornerPrizeVendor_NotEnoughCoinsScript
 	getitemname STRING_BUFFER_3, TM_FIRE_BLAST
@@ -116,6 +177,11 @@ GoldenrodGameCornerTMVendor_FinishScript:
 	waitsfx
 	playsound SFX_TRANSACTION
 	writetext GoldenrodGameCornerPrizeVendorHereYouGoText
+	waitbutton
+	sjump GoldenrodGameCornerTMVendor_LoopScript
+	
+GoldenrodGameCornerPrizeVendor_AlreadyHaveTMScript:
+	writetext GoldenrodGameCornerPrizeVendorAlreadyHaveTMText
 	waitbutton
 	sjump GoldenrodGameCornerTMVendor_LoopScript
 
@@ -341,6 +407,11 @@ GoldenrodGameCornerPrizeVendorConfirmPrizeText:
 GoldenrodGameCornerPrizeVendorHereYouGoText:
 	text "Here you go!"
 	done
+	
+GoldenrodGameCornerPrizeVendorAlreadyHaveTMText:
+	text "But you already"
+	line "have that TM!"
+	done
 
 GoldenrodGameCornerPrizeVendorNeedMoreCoinsText:
 	text "Sorry! You need"
@@ -464,9 +535,54 @@ else
 	done
 endc
 
-MoveTutorInsideText:
-	text "Wahahah! The coins"
-	line "keep rolling in!"
+GoldenrodGameCornerMoveTutorText:
+	text "I'm tryin' to get"
+	line "enough coins"
+	
+	para "to buy those"
+	line "powerful moves."
+	
+	para "Good things ain't"
+	line "cheap, y'know!"
+	done
+
+GoldenrodGameCornerMoveTutorAskTeachAMoveText:
+	text "Hey kid! I can"
+	line "teach your #MON"
+
+	para "amazing moves if"
+	line "you'd like."
+
+	para "Should I teach a"
+	line "new move?"
+	done
+
+GoldenrodGameCornerMoveTutorAllRightKidText:
+	text "All right, kid!"
+	line "You know where to"
+	
+	para "find me if you"
+	line "change your mind."
+	done
+
+GoldenrodGameCornerMoveTutorWhichMoveShouldITeachText:
+	text "Which move should"
+	line "I teach?"
+	done
+
+GoldenrodGameCornerMoveTutorWantMeToTeachAnotherMoveText:
+	text "Want me to teach"
+	line "another move?"
+	done
+
+GoldenrodGameCornerMoveTutorTakeItEasyKidText:
+	text "Take it easy, kid!"
+	line "It's back to the"
+	cont "grind for me!"
+	done
+
+GoldenrodGameCornerMoveTutorMoveText:
+	text_start
 	done
 
 GoldenrodGameCornerLeftTheirDrinkText:
@@ -530,4 +646,4 @@ GoldenrodGameCorner_MapEvents:
 	object_event 10,  3, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_WANDER, 2, 1, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, GoldenrodGameCornerCooltrainerFScript, -1
 	object_event  5, 10, SPRITE_GENTLEMAN, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, GoldenrodGameCornerGentlemanScript, -1
 	object_event  2,  9, SPRITE_POKEFAN_M, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_BROWN, OBJECTTYPE_SCRIPT, 0, GoldenrodGameCornerPokefanM2Script, -1
-	object_event 17, 10, SPRITE_POKEFAN_M, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, MoveTutorInsideScript, EVENT_GOLDENROD_GAME_CORNER_MOVE_TUTOR
+	object_event 17, 10, SPRITE_POKEFAN_M, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, MoveTutorScript, EVENT_GOLDENROD_GAME_CORNER_MOVE_TUTOR

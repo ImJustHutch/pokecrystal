@@ -178,13 +178,13 @@ ForgetMove:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
-	push af
-	push bc
-	call IsHMMove
-	pop bc
-	pop de
-	ld a, d
-	jr c, .hmmove
+	;push af
+	;push bc
+	;call IsHMMove
+	;pop bc
+	;pop de
+	;ld a, d
+	;jr c, .hmmove
 	pop hl
 	add hl, bc
 	and a

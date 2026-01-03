@@ -551,13 +551,13 @@ TryObjectEvent:
 	ld a, [hl]
 	and MAPOBJECT_TYPE_MASK
 
-; BUG: TryObjectEvent arbitrary code execution (see docs/bugs_and_glitches.md)
+; BUG (FIXED): TryObjectEvent arbitrary code execution (see docs/bugs_and_glitches.md)
 	push bc
 	ld de, 3
 	ld hl, ObjectEventTypeArray
 	call IsInArray
-	jr nc, .nope
 	pop bc
+	jr nc, .nope
 
 	inc hl
 	ld a, [hli]
@@ -943,8 +943,18 @@ DoRepelStep:
 	ld [wRepelEffect], a
 	ret nz
 
+	ld a, [wRepelType]
+	ld [wCurItem], a
+	ld hl, wNumItems
+	call CheckItem
+
 	ld a, BANK(RepelWoreOffScript)
 	ld hl, RepelWoreOffScript
+	jr nc, .got_script
+	ld a, BANK(UseAnotherRepelScript)
+	ld hl, UseAnotherRepelScript
+	
+.got_script
 	call CallScript
 	scf
 	ret

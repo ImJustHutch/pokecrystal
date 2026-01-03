@@ -5,11 +5,101 @@
 	const RADIOTOWER1F_ROCKET
 	const RADIOTOWER1F_LUCKYNUMBERMAN
 	const RADIOTOWER1F_CARD_WOMAN
+	const RADIOTOWER1F_MOVETUTOR
 
 RadioTower1F_MapScripts:
 	def_scene_scripts
+	scene_script RadioTower1FNoopScene, SCENE_RADIOTOWER1F_NOOP
+	scene_script RadioTower1FMoveTutorIntroScene, SCENE_RADIOTOWER1F_MOVETUTOR_INTRO
 
 	def_callbacks
+	callback MAPCALLBACK_OBJECTS, RadioTower1FMoveTutorCallback
+
+RadioTower1FNoopScene:
+	end
+
+RadioTower1FMoveTutorIntroScene:
+	end
+
+RadioTower1FMoveTutorIntroSceneRight1:
+	turnobject PLAYER, LEFT
+	opentext
+	writetext RadioTower1FMoveTutorIntro1Text
+	waitbutton
+	closetext
+	applymovement RADIOTOWER1F_MOVETUTOR, RadioTower1FMoveTutorExitRight1Movement
+	turnobject RADIOTOWER1F_MOVETUTOR, DOWN
+	showemote EMOTE_SHOCK, RADIOTOWER1F_MOVETUTOR, 15
+	pause 15
+	turnobject RADIOTOWER1F_MOVETUTOR, UP
+	turnobject PLAYER, DOWN
+	opentext
+	writetext RadioTower1FMoveTutorIntro2Text
+	waitbutton
+	closetext
+	turnobject RADIOTOWER1F_MOVETUTOR, DOWN
+	pause 5
+	playsound SFX_EXIT_BUILDING
+	disappear RADIOTOWER1F_MOVETUTOR
+	setevent EVENT_MET_MOVE_TUTOR
+	setscene SCENE_RADIOTOWER1F_NOOP
+	end
+
+RadioTower1FMoveTutorIntroSceneRight2:
+	applymovement RADIOTOWER1F_MOVETUTOR, RadioTower1FMoveTutorExtraStepMovement
+	turnobject PLAYER, LEFT
+	opentext
+	writetext RadioTower1FMoveTutorIntro1Text
+	waitbutton
+	closetext
+	applymovement RADIOTOWER1F_MOVETUTOR, RadioTower1FMoveTutorExitRight2Movement
+	showemote EMOTE_SHOCK, RADIOTOWER1F_MOVETUTOR, 15
+	pause 15
+	applymovement RADIOTOWER1F_MOVETUTOR, RadioTower1FMoveTutorWalkBackMovement
+	turnobject RADIOTOWER1F_MOVETUTOR, RIGHT
+	opentext
+	writetext RadioTower1FMoveTutorIntro2Text
+	waitbutton
+	closetext
+	applymovement RADIOTOWER1F_MOVETUTOR, RadioTower1FMoveTutorExitRight2Movement
+	playsound SFX_EXIT_BUILDING
+	disappear RADIOTOWER1F_MOVETUTOR
+	setevent EVENT_MET_MOVE_TUTOR
+	setscene SCENE_RADIOTOWER1F_NOOP
+	end
+
+RadioTower1FMoveTutorIntroSceneDown:
+	turnobject RADIOTOWER1F_MOVETUTOR, DOWN
+	turnobject PLAYER, UP
+	opentext
+	writetext RadioTower1FMoveTutorIntro1Text
+	waitbutton
+	closetext
+	applymovement RADIOTOWER1F_MOVETUTOR, RadioTower1FMoveTutorExitDownMovement
+	showemote EMOTE_SHOCK, RADIOTOWER1F_MOVETUTOR, 15
+	pause 15
+	turnobject RADIOTOWER1F_MOVETUTOR, LEFT
+	turnobject PLAYER, RIGHT
+	opentext
+	writetext RadioTower1FMoveTutorIntro2Text
+	waitbutton
+	closetext
+	turnobject RADIOTOWER1F_MOVETUTOR, DOWN
+	pause 5
+	playsound SFX_EXIT_BUILDING
+	disappear RADIOTOWER1F_MOVETUTOR
+	setevent EVENT_MET_MOVE_TUTOR
+	setscene SCENE_RADIOTOWER1F_NOOP
+	end
+
+RadioTower1FMoveTutorCallback:
+	checkevent EVENT_CLEARED_RADIO_TOWER
+	iffalse .finish
+	checkevent EVENT_MET_MOVE_TUTOR
+	iftrue .finish
+	appear RADIOTOWER1F_MOVETUTOR
+.finish
+	endcallback
 
 RadioTower1FReceptionistScript:
 	faceplayer
@@ -32,8 +122,8 @@ RadioTower1FLuckyNumberManScript:
 	opentext
 	writetext RadioTower1FLuckyNumberManAskToPlayText
 	promptbutton
-	special CheckLuckyNumberShowFlag
-	iffalse .skip
+	checkflag ENGINE_LUCKY_NUMBER_SHOW
+	iftrue .skip
 	special ResetLuckyNumberShowFlag
 .skip
 	special PrintTodaysLuckyNumber
@@ -210,6 +300,28 @@ RadioTower1FLuckyNumberManReturnToPlayerMovement:
 	turn_head UP
 	step_end
 
+RadioTower1FMoveTutorExitRight1Movement:
+	step DOWN
+	step RIGHT
+	step_end
+
+RadioTower1FMoveTutorExtraStepMovement:
+	step RIGHT
+	step_end
+	
+RadioTower1FMoveTutorExitRight2Movement:
+	step DOWN
+	step_end
+
+RadioTower1FMoveTutorWalkBackMovement:
+	step UP
+	step_end
+
+RadioTower1FMoveTutorExitDownMovement:
+	step RIGHT
+	step DOWN
+	step_end
+
 RadioTower1FReceptionistWelcomeText:
 	text "Welcome!"
 	done
@@ -235,8 +347,8 @@ RadioTower1FLuckyNumberManAskToPlayText:
 	done
 
 RadioTower1FLuckyNumberManThisWeeksIdIsText:
-	text "This week's ID"
-	line "number is @"
+	text "Today's ID number"
+	line "is @"
 	text_ram wStringBuffer3
 	text "."
 	done
@@ -253,7 +365,7 @@ RadioTower1FLuckyNumberManDotDotDotText:
 
 RadioTower1FLuckyNumberManComeAgainText:
 	text "Please come back"
-	line "next week for the"
+	line "tomorrow for the"
 	cont "next LUCKY NUMBER."
 	done
 
@@ -470,6 +582,72 @@ RadioTower1FLuckyChannelSignText:
 	cont "ent ID numbers!"
 	done
 
+RadioTower1FMoveTutorIntro1Text:
+	text "Hey kid! I heard"
+	line "your fight versus"
+	
+	para "TEAM ROCKET over"
+	line "the radio."
+	cont "Impressive stuff!"
+	
+	para "You remind me of"
+	line "this other kid who"
+	
+	para "ran TEAM ROCKET"
+	line "outta CELADON CITY"
+	cont "a few years ago."
+	
+	para "Yup, they ran the"
+	line "GAME CORNER over"
+	cont "there for a while."
+	
+	para "'Course, no one"
+	line "knew it at the"
+	cont "time."
+	
+	para "Oh, but they had"
+	line "the best prizes,"
+	cont "TMs especially!"
+	
+	para "You can't get 'em"
+	line "anymore either!"
+	
+	para "I think they were"
+	line "discontinued after"
+	cont "TEAM ROCKET left."
+	
+	para "Anyway."
+	
+	para "Thanks for puttin'"
+	line "a stop to their"
+	cont "plans again."
+	done
+	
+RadioTower1FMoveTutorIntro2Text:
+	text "Hey! I know!"
+	line "I still have those"
+	
+	para "old TMs from back"
+	line "in the day."
+	
+	para "I'm not willin' to"
+	line "part with 'em, but"
+	
+	para "I'd be happy to"
+	line "teach 'em to your"
+	cont "#MON whenever!"
+	
+	para "You can find me"
+	line "hangin' around the"
+	cont "GAME CORNER."
+	
+	para "See ya, kid!"
+	done
+
+RadioTower1FMoveTutorMoveText:
+	text_start
+	done
+
 RadioTower1F_MapEvents:
 	db 0, 0 ; filler
 
@@ -479,6 +657,9 @@ RadioTower1F_MapEvents:
 	warp_event 15,  0, RADIO_TOWER_2F, 2
 
 	def_coord_events
+	coord_event  1,  7, SCENE_RADIOTOWER1F_MOVETUTOR_INTRO, RadioTower1FMoveTutorIntroSceneDown
+	coord_event  2,  6, SCENE_RADIOTOWER1F_MOVETUTOR_INTRO, RadioTower1FMoveTutorIntroSceneRight1
+	coord_event  3,  6, SCENE_RADIOTOWER1F_MOVETUTOR_INTRO, RadioTower1FMoveTutorIntroSceneRight2
 
 	def_bg_events
 	bg_event  3,  0, BGEVENT_READ, RadioTower1FDirectory
@@ -491,3 +672,4 @@ RadioTower1F_MapEvents:
 	object_event 14,  1, SPRITE_ROCKET, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 3, TrainerGruntM3, EVENT_RADIO_TOWER_ROCKET_TAKEOVER
 	object_event  8,  6, SPRITE_GENTLEMAN, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, RadioTower1FLuckyNumberManScript, EVENT_GOLDENROD_CITY_CIVILIANS
 	object_event 12,  6, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, RadioTower1FRadioCardWomanScript, EVENT_GOLDENROD_CITY_CIVILIANS
+	object_event  1,  6, SPRITE_POKEFAN_M, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_RADIO_TOWER_1F_MOVE_TUTOR

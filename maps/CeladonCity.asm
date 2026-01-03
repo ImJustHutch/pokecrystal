@@ -49,7 +49,7 @@ CeladonCityTeacher2Script:
 	jumptextfaceplayer CeladonCityTeacher2Text
 
 CeladonCityLassScript:
-	jumptextfaceplayer CeladonCityLassText
+	jumptextfaceplayer CeladonCityLassText_Mobile
 
 CeladonCitySign:
 	jumptext CeladonCitySignText

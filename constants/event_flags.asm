@@ -1349,7 +1349,7 @@
 	const EVENT_RANG_CLEAR_BELL_2
 	const EVENT_FLORIA_AT_FLOWER_SHOP
 	const EVENT_FLORIA_AT_SUDOWOODO
-	const EVENT_GOLDENROD_CITY_MOVE_TUTOR
+	const EVENT_RADIO_TOWER_1F_MOVE_TUTOR
 	const EVENT_GOLDENROD_GAME_CORNER_MOVE_TUTOR
 ; Unused: next 0 events
 ; (In pokegold the previous 4 event flags were not defined,
@@ -1459,7 +1459,8 @@
 	const EVENT_RADIO_TOWER_5F_ULTRA_BALL
 	const EVENT_DARK_CAVE_VIOLET_ENTRANCE_DIRE_HIT
 	const EVENT_BATTLE_TOWER_OPEN_CIVILIANS
-; Unused: next 48 events
+	const EVENT_MET_MOVE_TUTOR
+; Unused: next 47 events
 
 	const_next 2048
 DEF NUM_EVENTS EQU const_value ; 800

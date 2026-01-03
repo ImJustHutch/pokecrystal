@@ -32,9 +32,9 @@ LoadPoisonBGPals:
 	ld hl, wBGPals2
 	ld c, 4 palettes
 .loop
-	ld a, LOW(palred 28 + palgreen 21 + palblue 31)
+	ld a, LOW(palred 27 + palgreen 22 + palblue 30)
 	ld [hli], a
-	ld a, HIGH(palred 28 + palgreen 21 + palblue 31)
+	ld a, HIGH(palred 27 + palgreen 22 + palblue 30)
 	ld [hli], a
 	dec c
 	jr nz, .loop
