@@ -4,7 +4,11 @@ This is a hack of Pokémon Crystal.
 
 My approach with hacks is to remove tedium and give the player as much choice & freedom as possible without changing too much of the game as a whole. I think the original Pokemon Crystal has a lot to offer, and I wanted it to shine through, hence the name.
 
+This hack uses adjusted colors meant to look like how it would have on a GBC and is intended be viewed on a backlit screen (e.g. GBA SP, modded GBC, mGBA, etc.)
+
 Read the changelog for all the featured changes.
+
+You can reach me via Discord @ImJustHutch
 
 pret/pokecrystal stuff:
 To set up the repository, see [INSTALL.md](INSTALL.md).
