@@ -1,6 +1,6 @@
 General:
 - All bugfixes outlined in docs/bugs_and_glitches.md have been implemented
-- All uncensored/cut content restored from Japanese version
+- All censored/cut content restored from Japanese version
 - Odd Egg now has 50/50 chance of giving a shiny like in Japanese version
 
 QoL:
@@ -14,9 +14,9 @@ QoL:
 - Added Tradeback Guy to the Mobile Center (Gameboy kid closest to the door)
 
 Moves n' stuff:
-- TMs are reusable. Some have had their duplicates removed or have been relocated
+- TMs are reusable
 - TM/HM names are shown in menus & when received
-- HMs are forgettable (this means you can potentially softlock your game, but don't do that lol) [engine/pokemon/learn.asm & home/hm_moves.asm]
+- HMs are forgettable
 - Pokemon need only be able to learn a field move in order to use it
 - The Move Deleter is now the Move Reminder. This implementation can teach moves of previous evolutions as well
 - Goldenrod Move Tutor is free, available after clearing Radio Tower, and can teach endlessly
@@ -25,13 +25,18 @@ Battle:
 - Twineedle can no longer poison Steel types; Tri Attack can no longer burn Fire types or freeze Ice types
 - Removed the AI's extra 25% chance to miss status moves
 - Text updated to differentiate between miss, fail, & protect
+- Removed both the badge stat boost & type boost
+
+Items:
+- Abra now holds Twistedspoon 2% of the time
+- Common wild hold item chance increased from 23% to 50%, rare from 2% to 5%
 
 Aesthetics:
-- Applied a BGB style color filter! Included program used to edit source pngs with instructions
+- Applied a BGB style color filter. Included program used to edit source pngs with instructions
 
 Miscellaneous:
-- Able to bike through the National Park gates!
+- Able to bike through the National Park gates
 - Improved outdoor sprite system
-- Abra now holds Twistedspoon 2% of the time
+
 
 more to come...
