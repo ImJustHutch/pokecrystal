@@ -638,10 +638,6 @@ UnownDBackpic:       INCBIN "gfx/pokemon/unown_d/back.2bpp.lz"
 
 SECTION "Pics 18", ROMX
 
-JynxFrontpic:        INCBIN "gfx/pokemon/jynx/front.animated.2bpp.lz"
-MediumPic:           INCBIN "gfx/trainers/medium.2bpp.lz"
-FisherPic:           INCBIN "gfx/trainers/fisher.2bpp.lz"
-SagePic:             INCBIN "gfx/trainers/sage.2bpp.lz"
 SpinarakBackpic:     INCBIN "gfx/pokemon/spinarak/back.2bpp.lz"
 RaikouBackpic:       INCBIN "gfx/pokemon/raikou/back.2bpp.lz"
 UnownKFrontpic:      INCBIN "gfx/pokemon/unown_k/front.animated.2bpp.lz"
@@ -707,8 +703,11 @@ UnownRBackpic:       INCBIN "gfx/pokemon/unown_r/back.2bpp.lz"
 SECTION "Pics 19", ROMX
 
 ; Removed copy of bank 18
-; Due to changing the png palette data, some banks overflow, so the last entry for those has been moved here
-
+; Due to adding restored gfx & changing the png palette data, some banks overflow, so the last entry for those has been moved here
+JynxFrontpic:        INCBIN "gfx/pokemon/jynx/front.animated.2bpp.lz"
+MediumPic:           INCBIN "gfx/trainers/medium.2bpp.lz"
+FisherPic:           INCBIN "gfx/trainers/fisher.2bpp.lz"
+SagePic:             INCBIN "gfx/trainers/sage.2bpp.lz"
 QuilavaFrontpic:     INCBIN "gfx/pokemon/quilava/front.animated.2bpp.lz"
 OmastarBackpic:      INCBIN "gfx/pokemon/omastar/back.2bpp.lz"
 HeracrossFrontpic:   INCBIN "gfx/pokemon/heracross/front.animated.2bpp.lz"

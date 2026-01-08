@@ -70,7 +70,7 @@ uint32_t reverse_bytes_bitwise(uint32_t value) {
 const int8_t deltaG0[32] = {0, -1, -2, -3, -3, -4, -4, -4, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -6, -6, -6, -6, -6, -7, -7, -7, -8, -8, -9, -10, -10};
 const int8_t deltaG1[32] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2};
 const int8_t deltaG2[32] = {0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10};
-const int8_t deltaRGB[32] = {0, -1, -2, -2, -3, -3, -3, -3, -3, -3, -3, -2, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 0};
+const int8_t deltaRB[32] = {0, -1, -2, -2, -3, -3, -3, -3, -3, -3, -3, -2, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 0};
 const int8_t gamma_delta[32] = {0, 0, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 6, 6, 5, 5, 4, 3, 3, 2, 2, 2, 1, 1, 0, 0, 0};
 const int8_t desat_delta[32] = {-0, -0, -0, -0, -0, -0, -0, -0, -1, -1, -1, -1, -1, -1, -1, -2, -2, -2, -2, -2, -2, -2, -2, -3, -3, -3, -3, -3, -3, -3, -3, -3};
 
@@ -87,27 +87,41 @@ const int8_t desat_delta[32] = {-0, -0, -0, -0, -0, -0, -0, -0, -1, -1, -1, -1, 
 	assumes that it will not be fed pure white or pure black.
 */
 void adjust_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
-
-    uint8_t rgb[3] = {*r, *g, *b};
-    uint8_t rgb_adj[3] = {*r, *g, *b};
+	
+	//r & g are swapped for easier interating
+    uint8_t rgb[3] = {*g, *r, *b};
+    uint8_t rgb_adj[3] = {*g, *r, *b};
 
 	// --- GBC color filter ---
-	rgb_adj[1] += deltaG0[rgb[1]];
-	rgb_adj[1] += deltaG1[rgb[0]];
-	rgb_adj[1] += deltaG2[rgb[2]];
+	rgb_adj[0] += deltaG0[rgb[0]];
+	rgb_adj[0] += deltaG1[rgb[1]];
+	rgb_adj[0] += deltaG2[rgb[2]];
+	
+	for (size_t i = 1; i < 3; i++)
+		rgb_adj[i] += deltaRB[rgb[i]];
 	
 	for (size_t i = 0; i < 3; i++)
 		if (rgb_adj[i] > 31)
 			rgb_adj[i] = 31;
-	
-	for (size_t i = 0; i < 3; i++)
-		rgb_adj[i] += deltaRGB[rgb[i]];
+		
 	// --- Gamma filter ---
 	for (size_t i = 0; i < 3; i++)
+		rgb[i] = rgb_adj[i];
+	
+	for (size_t i = 0; i < 3; i++)
 		rgb_adj[i] += gamma_delta[rgb[i]];
+	
+	for (size_t i = 0; i < 3; i++)
+		if (rgb_adj[i] > 31)
+			rgb_adj[i] = 31;
+		
 	// --- Desaturation filter ---
 	for (size_t i = 0; i < 3; i++)
+		rgb[i] = rgb_adj[i];
+	
+	for (size_t i = 0; i < 3; i++)
 		rgb_adj[i] += desat_delta[rgb[i]];
+		
 	// Additional adjustments
 	if (rgb[1] > 11)
 		rgb_adj[0] += 1;
@@ -127,14 +141,15 @@ void adjust_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
 		rgb_adj[2] += 1;
 	
 	for (size_t i = 0; i < 3; i++)
-		if (rgb_adj[i] > 31) rgb_adj[i] = 31;
+		if (rgb_adj[i] > 31)
+			rgb_adj[i] = 31;
 	
 	//printf("input r: 0x%" PRIx8 "\n", rgb[0]);	//for testing
 	//printf("input g: 0x%" PRIx8 "\n", rgb[1]);	//for testing
 	//printf("input b: 0x%" PRIx8 "\n", rgb[2]);	//for testing
 	
-	*r = rgb_adj[0];
-	*g = rgb_adj[1];
+	*r = rgb_adj[1];
+	*g = rgb_adj[0];
 	*b = rgb_adj[2];
 	
 	//printf("adjusted r: 0x%" PRIx8 "\n", rgb_adj[0]);	//for testing
