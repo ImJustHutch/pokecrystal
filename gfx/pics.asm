@@ -702,7 +702,7 @@ UnownRBackpic:       INCBIN "gfx/pokemon/unown_r/back.2bpp.lz"
 SECTION "Pics 19", ROMX
 
 ; Removed copy of bank 18
-; Due to adding restored gfx & changing the png palette data, some sections overflow, so the last entry for each of those sections has been moved here
+; Due to adding restored gfx & changing the png palette data, some sections to grow too big/overflow, so the last entry for each of those sections has been moved here
 QuilavaFrontpic:     INCBIN "gfx/pokemon/quilava/front.animated.2bpp.lz"	; section 2
 OmastarBackpic:      INCBIN "gfx/pokemon/omastar/back.2bpp.lz"				; section 3
 HeracrossFrontpic:   INCBIN "gfx/pokemon/heracross/front.animated.2bpp.lz" 	; section 5
