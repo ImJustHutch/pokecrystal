@@ -27,6 +27,9 @@ BattleTowerOutsideBeautyScript:
 BattleTowerOutsideSailorScript:
 	jumptextfaceplayer BattleTowerOutsideSailorText
 
+BattleTowerOutsideScopeLens:
+	itemball SCOPE_LENS
+
 BattleTowerOutsideSign:
 	jumptext BattleTowerOutsideSignText
 
@@ -146,3 +149,4 @@ BattleTowerOutside_MapEvents:
 	object_event 13, 11, SPRITE_BEAUTY, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, BattleTowerOutsideBeautyScript, -1
 	object_event 12, 18, SPRITE_SAILOR, SPRITEMOVEDATA_WALK_LEFT_RIGHT, 1, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, BattleTowerOutsideSailorScript, EVENT_BATTLE_TOWER_OPEN_CIVILIANS
 	object_event 12, 24, SPRITE_LASS, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
+	object_event  2,  4, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, BattleTowerOutsideScopeLens, EVENT_BATTLE_TOWER_OUTSIDE_SCOPE_LENS

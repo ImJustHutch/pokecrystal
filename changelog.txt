@@ -1,7 +1,8 @@
+Many of the changes can be found here: https://github.com/pret/pokecrystal/wiki/Tutorials
+
 General:
 - All bugfixes outlined in docs/bugs_and_glitches.md have been implemented
 - All censored/cut content restored from Japanese version
-- Odd Egg now has 50/50 chance of giving a shiny like in Japanese version
 
 QoL:
 - No password needed to reset the clock (still hold Down + B + SEL)
@@ -12,6 +13,7 @@ QoL:
 - Kurt makes apricorn balls instantly
 - Shorter low health beep
 - Added Tradeback Guy to the Mobile Center (Gameboy kid closest to the door)
+- Odd Egg now has 50/50 chance of giving a shiny like in Japanese version
 
 Moves n' stuff:
 - TMs are reusable
@@ -28,8 +30,14 @@ Battle:
 - Removed both the badge stat boost & type boost
 
 Items:
-- Abra now holds Twistedspoon 2% of the time
 - Common wild hold item chance increased from 23% to 50%, rare from 2% to 5%
+- Abra holds Twistedspoon 5% of the time
+- Ditto holds MetalPowder 5% of the time
+- Jigglypuff holds Polkadot Bow 5% of the time
+- Pikachu holds Light Ball 5% of the time
+- Machop holds Brick Piece 5% of the time
+- Mary now gives BrightPowder like in HGSS instead of another Pink Bow
+- Scope Lens placed outside the Battle Tower
 
 Aesthetics:
 - Applied a BGB style color filter. Included program used to edit source pngs with instructions
