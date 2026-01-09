@@ -32,7 +32,7 @@ This hack uses adjusted colors meant to look like how it would on a GBC and is i
 
 ### and more!
 
-Read the changelog(CHANGELOG.txt) for a detailed list of changes.
+See [CHANGELOG.txt](CHANGELOG.txt) for a detailed list of changes.
 
 You can reach me via Discord @ImJustHutch
 
