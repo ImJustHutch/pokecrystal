@@ -5,7 +5,7 @@ General:
 - All censored/cut content restored from Japanese version
 
 QoL:
-- No password needed to reset the clock (still hold Down + B + SEL)
+- No password needed to reset the clock
 - Much faster saving
 - Prompt to reuse repels
 - Lottery is daily instead of weekly
@@ -25,8 +25,8 @@ Moves n' stuff:
 
 Battle:
 - Twineedle can no longer poison Steel types; Tri Attack can no longer burn Fire types or freeze Ice types
-- Removed the AI's extra 25% chance to miss status moves
 - Text updated to differentiate between miss, fail, & protect
+- Removed the AI's extra 25% chance to miss status moves
 - Removed both the badge stat boost & type boost
 
 Items:
