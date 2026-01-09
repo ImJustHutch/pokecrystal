@@ -74,6 +74,17 @@ const int8_t deltaRB[32] = {0, -1, -2, -2, -3, -3, -3, -3, -3, -3, -3, -2, -2, -
 const int8_t gamma_delta[32] = {0, 0, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 6, 6, 5, 5, 4, 3, 3, 2, 2, 2, 1, 1, 0, 0, 0};
 const int8_t desat_delta[32] = {-0, -0, -0, -0, -0, -0, -0, -0, -1, -1, -1, -1, -1, -1, -1, -2, -2, -2, -2, -2, -2, -2, -2, -3, -3, -3, -3, -3, -3, -3, -3, -3};
 
+void update_rgb(uint8_t *rgb, uint8_t *rgb_adj) {
+	for (size_t i = 0; i< 3; i++)
+		rgb[i] = rgb_adj[i];
+}
+
+void limit_range(uint8_t *rgb_adj) {
+	for (size_t i = 0; i< 3; i++)
+		if (rgb_adj[i] == 31)
+			rgb_adj[i] = 31;
+}
+
 /*
 	the adjusted RGB asm macro more or less converted to C.
 	takes 3 pointers to 5bit color channels for a single colors
@@ -88,7 +99,7 @@ const int8_t desat_delta[32] = {-0, -0, -0, -0, -0, -0, -0, -0, -1, -1, -1, -1, 
 */
 void adjust_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
 	
-	//r & g are swapped for easier interating
+	//r & g are swapped for easier iterating
     uint8_t rgb[3] = {*g, *r, *b};
     uint8_t rgb_adj[3] = {*g, *r, *b};
 
@@ -100,24 +111,18 @@ void adjust_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
 	for (size_t i = 1; i < 3; i++)
 		rgb_adj[i] += deltaRB[rgb[i]];
 	
-	for (size_t i = 0; i < 3; i++)
-		if (rgb_adj[i] > 31)
-			rgb_adj[i] = 31;
+	limit_range(rgb_adj);
 		
 	// --- Gamma filter ---
-	for (size_t i = 0; i < 3; i++)
-		rgb[i] = rgb_adj[i];
+	update_rgb(rgb, rgb_adj);
 	
 	for (size_t i = 0; i < 3; i++)
 		rgb_adj[i] += gamma_delta[rgb[i]];
 	
-	for (size_t i = 0; i < 3; i++)
-		if (rgb_adj[i] > 31)
-			rgb_adj[i] = 31;
+	limit_range(rgb_adj);
 		
 	// --- Desaturation filter ---
-	for (size_t i = 0; i < 3; i++)
-		rgb[i] = rgb_adj[i];
+	update_rgb(rgb, rgb_adj);
 	
 	for (size_t i = 0; i < 3; i++)
 		rgb_adj[i] += desat_delta[rgb[i]];
@@ -140,9 +145,7 @@ void adjust_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
 	else if (rgb[1] > 10)
 		rgb_adj[2] += 1;
 	
-	for (size_t i = 0; i < 3; i++)
-		if (rgb_adj[i] > 31)
-			rgb_adj[i] = 31;
+	limit_range(rgb_adj);
 	
 	//printf("input r: 0x%" PRIx8 "\n", rgb[0]);	//for testing
 	//printf("input g: 0x%" PRIx8 "\n", rgb[1]);	//for testing
@@ -165,7 +168,11 @@ void adjust_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
 	modify any non-white, non-black colors.
 	and writes the new colors to the file.
 	recalculates the Cyclic Redundancy Checksum (CRC)
-	and writes that to file as well
+	and writes that to file as well.
+	assumes that the PLTE chunk comes after the IHDR
+	chunk since that's how all of the colored pngs
+	are structured. if using a modified png, make
+	sure there are no other chunks.
 */
 
 void adjust_plte(const char *filename) {
