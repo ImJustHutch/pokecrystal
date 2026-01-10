@@ -138,8 +138,13 @@ Text_ReceivedMineralBadge:
 
 Jasmine_BadgeSpeech:
 	text "MINERALBADGE"
-	line "raises #MON's"
-	cont "DEFENSE."
+	line "ensures that all"
+	
+	para "#MON up to L70"
+	line "obey, including"
+	
+	para "ones received"
+	line "via trade."
 
 	para "…Um… Please take"
 	line "this too…"
